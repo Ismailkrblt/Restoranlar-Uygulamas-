@@ -1,2 +1,2 @@
-# Restoranlar-Uygulamas-
+# Restoranlar-Uygulamasi
 Restoran bilgilerini içeren mobil uygulama
