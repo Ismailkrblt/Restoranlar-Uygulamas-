@@ -1,3 +1,3 @@
-# Restoranlar-Uygulamasi
-Restoranların bilgilerini içeren 
+# Restaurantlar-Uygulamasi
+Restaurantların bilgilerini içeren 
 React Native dilinde geliştirilmiş mobil uygulama
