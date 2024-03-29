@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "MobilProjem",
-    "slug": "MobilProjem",
+    "name": "restoran",
+    "slug": "restoran",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
