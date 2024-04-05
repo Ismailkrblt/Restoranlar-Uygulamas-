@@ -17,15 +17,15 @@ export default function SearchScreen() {
     <View>
       <SearchBar />
       <ResultsList
-        title="Ucuz Restoranlar"
+        title="Uygun Restaurantlar"
         results={filterResultsByPrice('₺')}
       />
       <ResultsList
-        title="Uygun Restoranlar"
+        title="Ortalama Restaurantlar"
         results={filterResultsByPrice('₺₺')}
       />
       <ResultsList
-        title="Pahalı Restoranlar"
+        title="Pahalı Restaurantlar"
         results={filterResultsByPrice('₺₺₺')}
       />
     </View>
