@@ -6,7 +6,7 @@ import ResultsList from '../components/ResultsList';
 
 export default function SearchScreen() {
   const [searchApi, results] = useResults();
-  console.log(results);
+  //   console.log(results);
 
   const filterResultsByPrice = (price) => {
     return results.filter((result) => {
@@ -17,15 +17,15 @@ export default function SearchScreen() {
     <View>
       <SearchBar />
       <ResultsList
-        title="Uygun Restaurantlar"
+        title="Ucuz Restoranlar"
         results={filterResultsByPrice('₺')}
       />
       <ResultsList
-        title="Ortalama Restaurantlar"
+        title="Uygun Restoranlar"
         results={filterResultsByPrice('₺₺')}
       />
       <ResultsList
-        title="Pahalı Restaurantlar"
+        title="Pahalı Restoranlar"
         results={filterResultsByPrice('₺₺₺')}
       />
     </View>
