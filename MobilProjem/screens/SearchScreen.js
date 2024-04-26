@@ -25,7 +25,7 @@ export default function SearchScreen() {
         results={filterResultsByPrice('₺₺')}
       />
       <ResultsList
-        title="Pahalı Fiyatlar"
+        title="Yüksek Fiyatlar"
         results={filterResultsByPrice('₺₺₺')}
       />
     </View>
