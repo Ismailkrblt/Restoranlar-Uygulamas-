@@ -1,5 +1,6 @@
 import { FlatList, Image, StyleSheet, Text, View } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { useEffect, useState } from 'react';
 import yelp from '../api/yelp';
 import { AntDesign } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -17,7 +18,6 @@ export default function ResultsShowScreen({ route }) {
   useEffect(() => {
     getResult(id);
   }, []);
-
   if (!result) {
     return null;
   }
@@ -28,9 +28,9 @@ export default function ResultsShowScreen({ route }) {
       <Text style={styles.phone}>{result.phone}</Text>
       <View style={styles.icon}>
         {result.is_closed ? (
-          <AntDesign name="closecircleo" size={30} color="#B03000" /> 
+          <AntDesign name="closecircleo" size={30} color="black" />
         ) : (
-          <MaterialIcons name="delivery-dining" size={30} color="#B03000" /> 
+          <MaterialIcons name="delivery-dining" size={30} color="black" />
         )}
       </View>
 
