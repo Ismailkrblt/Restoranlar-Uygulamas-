@@ -18,7 +18,7 @@ export default function SearchBar({ term, onTermChange, onTermSubmit }) {
         autoCapitalize="none"
         value={term}
         onChangeText={onTermChange}
-        onEndEditing={onTermSubmit}
+        onSubmitEditing={onTermSubmit}
       />
     </View>
   );

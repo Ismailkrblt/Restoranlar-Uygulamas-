@@ -9,7 +9,7 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerTitle: 'Restoran Uygulaması' }}>
+      <Stack.Navigator screenOptions={{ headerTitle: 'NeGit' }}>
         <Stack.Screen name="Search" component={SearchScreen} />
         <Stack.Screen name="ResultsShow" component={ResultsShowScreen} />
       </Stack.Navigator>
