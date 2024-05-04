@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontWeight: 'bold',
     padding: 20,
-    backgroundColor: '#f8f8ff', 
+    backgroundColor: 'white', 
   },
   infoContainer: {
     fontWeight: 'bold',
