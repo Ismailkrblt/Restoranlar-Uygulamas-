@@ -6,10 +6,17 @@ import SearchScreen from './screens/SearchScreen';
 import ResultsShowScreen from './screens/ResultsShowScreen';
 
 const Stack = createNativeStackNavigator();
+
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerTitle: 'NeYesek' }}>
+      <Stack.Navigator
+        screenOptions={{
+          headerTitle: 'NeYesek',
+          headerTitleStyle: { color: 'black', fontWeight:'bold', justifyContent:'center' }, 
+        }}
+        
+      >
         <Stack.Screen name="Search" component={SearchScreen} />
         <Stack.Screen name="ResultsShow" component={ResultsShowScreen} />
       </Stack.Navigator>
