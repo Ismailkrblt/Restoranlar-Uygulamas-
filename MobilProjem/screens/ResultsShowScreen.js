@@ -44,8 +44,11 @@ export default function ResultsShowScreen({ route }) {
   // Extract location information without postal code
   const locationInfo = `${result.location.address1}, ${result.location.city}, ${result.location.state}`.replace(/, 34$/, '');
 
-  // Extract hours information or show a message if not available
-  const hoursInfo = result.hours ? result.hours.map(day => `${day.day}: ${day.start || 'Belirtilmemiş'} - ${day.end || 'Belirtilmemiş'}`).join('\n') : 'Çalışma saatleri belirtilmemiş.';
+  // Check if the business is currently open
+  const isOpen = result.hours && result.hours[0].is_open_now;
+
+  // Determine the status text to display based on whether the business is open or closed
+  const openStatus = isOpen ? 'İşletme şu anda açık' : 'İşletme şu anda kapalı';
 
   return (
     <View style={styles.container}>
@@ -65,7 +68,7 @@ export default function ResultsShowScreen({ route }) {
         )}
         <Text style={styles.phone}>{formatPhoneNumber(result.phone)}</Text>
         <Text style={styles.location}>{locationInfo}</Text>
-        <Text style={styles.hours}>{hoursInfo}</Text>
+        <Text style={styles.hours}>{openStatus}</Text>
         <View style={styles.iconContainer}>
           {result.is_closed ? (
             <AntDesign name="closecircleo" size={30} color="black" />
