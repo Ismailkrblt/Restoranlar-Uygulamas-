@@ -5,8 +5,6 @@ import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 
 export default function ResultsShowScreen({ route }) {
   const [result, setResult] = useState(null);
-  const [menu, setMenu] = useState(null); // Yeni eklenen state
-
   const id = route.params.id;
 
   const getResult = async (id) => {
@@ -18,18 +16,8 @@ export default function ResultsShowScreen({ route }) {
     }
   };
 
-  const getMenu = async () => {
-    try {
-      const response = await yelp.get(`/${id}/menu`);
-      setMenu(response.data.menu);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   useEffect(() => {
     getResult(id);
-    getMenu(); // getMenu fonksiyonunu useEffect içinde çağırın
   }, []);
 
   if (!result) {
@@ -37,14 +25,27 @@ export default function ResultsShowScreen({ route }) {
   }
 
   const formatPhoneNumber = (phoneNumber) => {
+    // Remove leading characters (same as before)
     phoneNumber = phoneNumber.replace(/^[\+()\s-]*/g, '');
+  
+    // Slice the number from index 1 (discarding the first character)
     const formattedNumber = phoneNumber.slice(1);
+  
+    // Check if the number is long enough for 4-3-4 format
     if (formattedNumber.length < 7) {
-      return formattedNumber;
+      return formattedNumber; // Return as is if too short
     }
+  
+    // Insert hyphens using string interpolation
     const formatted434 = `${formattedNumber.slice(0, 4)}-${formattedNumber.slice(4, 7)}-${formattedNumber.slice(7)}`;
     return formatted434;
   };
+
+  // Extract location information without postal code
+  const locationInfo = `${result.location.address1}, ${result.location.city}, ${result.location.state}`.replace(/, 34$/, '');
+
+  // Extract hours information or show a message if not available
+  const hoursInfo = result.hours ? result.hours.map(day => `${day.day}: ${day.start || 'Belirtilmemiş'} - ${day.end || 'Belirtilmemiş'}`).join('\n') : 'Çalışma saatleri belirtilmemiş.';
 
   return (
     <View style={styles.container}>
@@ -63,6 +64,8 @@ export default function ResultsShowScreen({ route }) {
           </View>
         )}
         <Text style={styles.phone}>{formatPhoneNumber(result.phone)}</Text>
+        <Text style={styles.location}>{locationInfo}</Text>
+        <Text style={styles.hours}>{hoursInfo}</Text>
         <View style={styles.iconContainer}>
           {result.is_closed ? (
             <AntDesign name="closecircleo" size={30} color="black" />
@@ -70,23 +73,6 @@ export default function ResultsShowScreen({ route }) {
             <MaterialIcons name="delivery-dining" size={30} color="black" />
           )}
         </View>
-      </View>
-
-      {/* Menüyü göstermek için yeni View */}
-      <View style={styles.menuContainer}>
-        <Text style={styles.menuTitle}>Menü</Text>
-        {menu && (
-          <FlatList
-            data={menu.items}
-            renderItem={({ item }) => (
-              <View style={styles.menuItem}>
-                <Text>{item.name}</Text>
-                <Text>{item.price}</Text>
-              </View>
-            )}
-            keyExtractor={(item, index) => index.toString()}
-          />
-        )}
       </View>
 
       <FlatList
@@ -140,6 +126,17 @@ const styles = StyleSheet.create({
     color: '',
     marginBottom: 10,
   },
+  location: {
+    fontWeight: 'bold',
+    fontSize: 18,
+    marginBottom: 5,
+    color: 'black',
+  },
+  hours: {
+    fontWeight: 'bold',
+    fontSize: 16,
+    color: 'black',
+  },
   iconContainer: {
     fontWeight: 'bold',
     alignSelf: 'center',
@@ -154,18 +151,5 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: 'black',
     marginLeft: 5,
-  },
-  menuContainer: {
-    marginVertical: 20,
-  },
-  menuTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  menuItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 5,
   },
 });
