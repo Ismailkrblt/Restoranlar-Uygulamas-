@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
@@ -5,7 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SearchScreen from './screens/SearchScreen';
 import ResultsShowScreen from './screens/ResultsShowScreen';
 import RegisterScreen from './screens/RegisterScreen'; 
-import AsyncStorage from '@react-native/async-storage'; 
+import AsyncStorage from '@react-native-async-storage/async-storage'; // 'AsyncStorage' modülünü doğru şekilde içe aktarın
 const Stack = createNativeStackNavigator();
 
 export default function App() {
