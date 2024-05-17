@@ -4,7 +4,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SearchScreen from './screens/SearchScreen';
 import ResultsShowScreen from './screens/ResultsShowScreen';
-
+import RegisterScreen from './screens/RegisterScreen'; 
+import AsyncStorage from '@react-native/async-storage'; 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -13,17 +14,19 @@ export default function App() {
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    // Giriş işlemini burada gerçekleştir
-    // Örneğin, API'ye istek göndererek doğrulama yapabilirsiniz
+    
     console.log('Giriş yapıldı', name, surname, password);
-    navigation.navigate('Search'); // Ana ekrana yönlendir
+    navigation.navigate('Search'); 
   };
 
-  const handleRegister = () => {
-    // Kayıt işlemini burada gerçekleştir
-    // Örneğin, API'ye istek göndererek kullanıcı oluşturabilirsiniz
-    console.log('Kayıt olundu', name, surname, password);
-    navigation.navigate('Search'); // Ana ekrana yönlendir
+  const handleRegister = async () => {
+    try {
+      await AsyncStorage.setItem('userData', JSON.stringify({ name, surname, password })); 
+      console.log('Kayıt olundu', name, surname, password);
+      navigation.navigate('Search'); 
+    } catch (error) {
+      console.error('Kayıt işlemi sırasında hata oluştu:', error);
+    }
   };
 
   return (
@@ -55,11 +58,29 @@ export default function App() {
                 onChangeText={(text) => setPassword(text)}
               />
               <Button title="Giriş Yap" onPress={handleLogin} />
-              <Button title="Kaydol" onPress={handleRegister} />
+              <Button title="Kaydol" onPress={() => navigation.navigate('Register')} />
             </View>
           )}
         </Stack.Screen>
-        <Stack.Screen name="Search" component={SearchScreen} />
+        <Stack.Screen
+          name="Register"
+          options={{ headerTitle: 'Kayıt Ol' }}
+        >
+          {(props) => <RegisterScreen {...props} handleRegister={handleRegister} />}
+        </Stack.Screen>
+        <Stack.Screen
+          name="Search"
+          options={({ navigation }) => ({
+            headerTitle: () => (
+              <View style={styles.headerTitle}>
+                <Text style={styles.headerTitleText}>NeYesek</Text>
+                <Text style={styles.headerTitleText}>{name} {surname}</Text>
+              </View>
+            ),
+          })}
+        >
+          {(props) => <SearchScreen {...props} name={name} surname={surname} />}
+        </Stack.Screen>
         <Stack.Screen name="ResultsShow" component={ResultsShowScreen} />
       </Stack.Navigator>
     </NavigationContainer>
@@ -80,5 +101,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 5,
+  },
+  headerTitle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  headerTitleText: {
+    fontSize: 18,
+    fontWeight: 'bold', 
   },
 });
