@@ -3,10 +3,10 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import AsyncStorage from '@react-native-async-storage/async-storage'; 
 import SearchScreen from './screens/SearchScreen';
 import ResultsShowScreen from './screens/ResultsShowScreen';
-import RegisterScreen from './screens/RegisterScreen'; 
-import AsyncStorage from '@react-native-async-storage/async-storage'; // 'AsyncStorage' modülünü doğru şekilde içe aktarın
+
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -14,13 +14,12 @@ export default function App() {
   const [surname, setSurname] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
-    
+  const handleLogin = (navigation) => {
     console.log('Giriş yapıldı', name, surname, password);
     navigation.navigate('Search'); 
   };
 
-  const handleRegister = async () => {
+  const handleRegister = async (navigation) => {
     try {
       await AsyncStorage.setItem('userData', JSON.stringify({ name, surname, password })); 
       console.log('Kayıt olundu', name, surname, password);
@@ -37,7 +36,7 @@ export default function App() {
           name="Login"
           options={{ headerTitle: 'Giriş' }}
         >
-          {({ navigation }) => (
+          {(props) => (
             <View style={styles.container}>
               <TextInput
                 style={styles.input}
@@ -58,16 +57,10 @@ export default function App() {
                 value={password}
                 onChangeText={(text) => setPassword(text)}
               />
-              <Button title="Giriş Yap" onPress={handleLogin} />
-              <Button title="Kaydol" onPress={() => navigation.navigate('Register')} />
+              <Button title="Giriş Yap" onPress={() => handleLogin(props.navigation)} />
+              <Button title="Kaydol" onPress={() => handleRegister(props.navigation)} />
             </View>
           )}
-        </Stack.Screen>
-        <Stack.Screen
-          name="Register"
-          options={{ headerTitle: 'Kayıt Ol' }}
-        >
-          {(props) => <RegisterScreen {...props} handleRegister={handleRegister} />}
         </Stack.Screen>
         <Stack.Screen
           name="Search"
