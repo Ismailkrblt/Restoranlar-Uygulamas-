@@ -30,15 +30,15 @@ export default function SearchScreen() {
           ) : (
             <>
               <ResultsList
-                title="Ucuz Restoranlar"
+                title="Uygun Fiyatlar"
                 results={filterResultsByPrice('₺')}
               />
               <ResultsList
-                title="Uygun Restoranlar"
+                title="Ortalama Fiyatlar"
                 results={filterResultsByPrice('₺₺')}
               />
               <ResultsList
-                title="Pahalı Restoranlar"
+                title="Yüksek Fiyatlar"
                 results={filterResultsByPrice('₺₺₺')}
               />
             </>
