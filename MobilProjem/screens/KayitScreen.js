@@ -8,7 +8,7 @@ export default function KayitScreen({ navigation }) {
 
   const handleSignUp = async () => {
     try {
-      const response = await fetch('http://example.com/signup', { // Backend sunucunuzun URL'sini buraya yazın
+      const response = await fetch('http://localhost:3000/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -28,12 +28,10 @@ export default function KayitScreen({ navigation }) {
         Alert.alert('Hata', data.error || 'Bir hata oluştu');
       }
     } catch (error) {
-        console.log('Fetch hatası:', error); // Hatanın ayrıntılarını konsola yazdır
-        Alert.alert('Hata', 'Bir hata oluştu');
-      }      
+      console.log('Fetch hatası:', error); // Hatanın ayrıntılarını konsola yazdır
+      Alert.alert('Hata', 'Sunucu ile iletişimde bir hata oluştu.');
+    }      
   };
-  
-  
 
   return (
     <View style={styles.container}>
