@@ -5,32 +5,39 @@ export default function KayitScreen({ navigation }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleSignUp = async () => {
+    setLoading(true);
+    console.log('Kayıt işlemi başladı.');
     try {
-      const response = await fetch('http://localhost:3000/signup', {
+      const response = await fetch('http://192.168.1.88:3000/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ username, password, email }),
       });
-  
-      const responseText = await response.text(); // Yanıtı metin olarak al
-      console.log(responseText); // Konsola yazdır
-  
+
+      console.log('Sunucudan yanıt bekleniyor.');
+
       const data = await response.json();
-  
+
       if (response.ok) {
+        console.log('Kayıt başarılı:', data.message);
         Alert.alert('Başarılı', data.message);
         navigation.navigate('Login');
       } else {
+        console.error('Sunucu hatası:', data.error || 'Bilinmeyen hata');
         Alert.alert('Hata', data.error || 'Bir hata oluştu');
       }
     } catch (error) {
-      console.log('Fetch hatası:', error); // Hatanın ayrıntılarını konsola yazdır
+      console.error('Fetch hatası:', error);
       Alert.alert('Hata', 'Sunucu ile iletişimde bir hata oluştu.');
-    }      
+    } finally {
+      setLoading(false);
+      console.log('Kayıt işlemi bitti.');
+    }
   };
 
   return (
@@ -41,12 +48,15 @@ export default function KayitScreen({ navigation }) {
         placeholder="Email"
         value={email}
         onChangeText={setEmail}
+        keyboardType="email-address"
+        autoCapitalize="none"
       />
       <TextInput
         style={styles.input}
         placeholder="Kullanıcı Adı"
         value={username}
         onChangeText={setUsername}
+        autoCapitalize="none"
       />
       <TextInput
         style={styles.input}
@@ -55,7 +65,11 @@ export default function KayitScreen({ navigation }) {
         onChangeText={setPassword}
         secureTextEntry
       />
-      <Button title="Kayıt Ol" onPress={handleSignUp} />
+      <Button
+        title={loading ? "Yükleniyor..." : "Kayıt Ol"}
+        onPress={handleSignUp}
+        disabled={loading}
+      />
     </View>
   );
 }
