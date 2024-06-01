@@ -11,7 +11,7 @@ export default function KayitScreen({ navigation }) {
     setLoading(true);
     console.log('Kayıt işlemi başladı.');
     try {
-      const response = await fetch('http://192.168.1.88:3000/signup', {
+      const response = await fetch('http://localhost:3000/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
