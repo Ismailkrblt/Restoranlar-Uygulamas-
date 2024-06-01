@@ -6,7 +6,7 @@ export default function LoginScreen({ navigation }) {
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    if (username === 'user' && password === 'password') {
+    if (username === 'admin' && password === 'admin') {
       navigation.navigate('Search');
     } else {
       alert('Yanlış kullanıcı adı veya şifre!');

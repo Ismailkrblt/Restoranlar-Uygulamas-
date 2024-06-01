@@ -1,7 +1,7 @@
 import { FlatList, Image, StyleSheet, Text, View } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
-import yelp from '../Api/yelp'; 
+import yelp from '../api/yelp'; 
 export default function ResultsShowScreen({ route }) {
   const [result, setResult] = useState(null);
   const id = route.params.id;
