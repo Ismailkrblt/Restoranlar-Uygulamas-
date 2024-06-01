@@ -1,7 +1,7 @@
 import { FlatList, Image, StyleSheet, Text, View } from 'react-native';
 import React, { useState, useEffect } from 'react';
-import { AntDesign, MaterialIcons } from '@expo/vector-icons';
-import yelp from '../api/yelp'; 
+import yelp from '../Api/yelp';
+
 export default function ResultsShowScreen({ route }) {
   const [result, setResult] = useState(null);
   const id = route.params.id;
@@ -24,29 +24,18 @@ export default function ResultsShowScreen({ route }) {
   }
 
   const formatPhoneNumber = (phoneNumber) => {
-    // Remove leading characters (same as before)
     phoneNumber = phoneNumber.replace(/^[\+()\s-]*/g, '');
-  
-    // Slice the number from index 1 (discarding the first character)
     const formattedNumber = phoneNumber.slice(1);
-  
-    // Check if the number is long enough for 4-3-4 format
     if (formattedNumber.length < 7) {
-      return formattedNumber; // Return as is if too short
+      return formattedNumber;
     }
-  
-    // Insert hyphens using string interpolation
     const formatted434 = `${formattedNumber.slice(0, 4)}-${formattedNumber.slice(4, 7)}-${formattedNumber.slice(7)}`;
     return formatted434;
   };
 
-  // Extract location information without postal code
   const locationInfo = `${result.location.address1}, ${result.location.city}, ${result.location.state}`.replace(/, 34$/, '');
 
-  // Check if the business is currently open
   const isOpen = result.hours && result.hours[0].is_open_now;
-
-  // Determine the status text to display based on whether the business is open or closed
   const openStatus = isOpen ? 'İşletme şu anda açık' : 'İşletme şu anda kapalı';
 
   return (
@@ -57,7 +46,7 @@ export default function ResultsShowScreen({ route }) {
           <View style={styles.ratingContainer}>
             <Text style={styles.rating}>{result.rating} ★ </Text>
             <Image
-              source={{ uri: result.rating_image }}
+              source={{ uri: result.image_url }} // Burada image_url kullanılmalı
               style={styles.ratingImage}
             />
             {result.review_count && (
@@ -68,22 +57,13 @@ export default function ResultsShowScreen({ route }) {
         <Text style={styles.phone}>{formatPhoneNumber(result.phone)}</Text>
         <Text style={styles.location}>{locationInfo}</Text>
         <Text style={styles.hours}>{openStatus}</Text>
-        <View style={styles.iconContainer}>
-          {result.is_closed ? (
-            <AntDesign name="closecircleo" size={30} color="black" />
-          ) : (
-            <MaterialIcons name="delivery-dining" size={30} color="black" />
-          )}
-        </View>
       </View>
 
       <FlatList
-        data={result.photos}
-        renderItem={({ item }) => {
-          return (
-            <Image style={styles.image} source={{ uri: item }} />
-          );
-        }}
+        data={result.photos} // result.photos yerine kullanıldı
+        renderItem={({ item }) => (
+          <Image style={styles.image} source={{ uri: item }} />
+        )}
         keyExtractor={(item) => item}
       />
     </View>
@@ -93,12 +73,10 @@ export default function ResultsShowScreen({ route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    fontWeight: 'bold',
     padding: 20,
     backgroundColor: 'white', 
   },
   infoContainer: {
-    fontWeight: 'bold',
     marginBottom: 20,
   },
   title: {
@@ -108,13 +86,11 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   ratingContainer: {
-    fontWeight: 'bold',
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 5,
   },
   rating: {
-    fontWeight: 'bold',
     fontSize: 18,
     marginRight: 5,
   },
@@ -123,25 +99,17 @@ const styles = StyleSheet.create({
     height: 20,
   },
   phone: {
-    fontWeight: 'bold',
     fontSize: 20,
-    color: '',
     marginBottom: 10,
   },
   location: {
-    fontWeight: 'bold',
     fontSize: 18,
     marginBottom: 5,
     color: 'black',
   },
   hours: {
-    fontWeight: 'bold',
     fontSize: 16,
     color: 'black',
-  },
-  iconContainer: {
-    fontWeight: 'bold',
-    alignSelf: 'center',
   },
   image: {
     height: 180,
@@ -149,7 +117,6 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   reviewCount: { 
-    fontWeight: 'bold',
     fontSize: 14,
     color: 'black',
     marginLeft: 5,

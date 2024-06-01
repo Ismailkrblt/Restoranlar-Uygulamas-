@@ -1,19 +1,21 @@
 import { useEffect, useState } from 'react';
-import yelp from '../api/yelp'; 
-
+import yelp from '../Api/yelp'; 
 
 export default () => {
   const [results, setResults] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
+
   const searchApi = async (searchTerm) => {
     try {
       const response = await yelp.get('/search', {
         params: {
           limit: 50,
-          term: searchTerm,
+          sort_by: 'best_match',
           location: 'İstanbul',
+          term: searchTerm
         },
       });
+      console.log(response.data.businesses); 
       setResults(response.data.businesses);
       setErrorMessage('');
     } catch (error) {
@@ -22,7 +24,7 @@ export default () => {
   };
 
   useEffect(() => {
-    searchApi('Toast');
+    searchApi('restaurant');
   }, []);
 
   return [searchApi, results, errorMessage];
