@@ -1,4 +1,4 @@
-import { FlatList, Image, StyleSheet, Text, View } from 'react-native';
+import { FlatList, Image, StyleSheet, Text, View, TouchableOpacity, Linking } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import yelp from '../Api/yelp';
 
@@ -38,6 +38,17 @@ export default function ResultsShowScreen({ route }) {
   const isOpen = result.hours && result.hours[0].is_open_now;
   const openStatus = isOpen ? 'İşletme şu anda açık' : 'İşletme şu anda kapalı';
 
+  const handleMenuPress = () => {
+    if (result.attributes && result.attributes.menu_url) {
+      Linking.openURL(result.attributes.menu_url);
+    } else if (result.url) {
+      Linking.openURL(result.url);
+    } else {
+      console.warn('Bu işletme için Menü URL bilgisi mevcut değil ve web sayfası da belirtilmemiş.');
+    }
+  };
+  
+
   return (
     <View style={styles.container}>
       <View style={styles.infoContainer}>
@@ -46,7 +57,7 @@ export default function ResultsShowScreen({ route }) {
           <View style={styles.ratingContainer}>
             <Text style={styles.rating}>{result.rating} ★ </Text>
             <Image
-              source={{ uri: result.image_url }} // Burada image_url kullanılmalı
+              source={{ uri: result.image_url }} 
               style={styles.ratingImage}
             />
             {result.review_count && (
@@ -58,6 +69,10 @@ export default function ResultsShowScreen({ route }) {
         <Text style={styles.location}>{locationInfo}</Text>
         <Text style={styles.hours}>{openStatus}</Text>
       </View>
+
+      <TouchableOpacity onPress={handleMenuPress}>
+        <Text style={styles.menuLink}>Menu</Text>
+      </TouchableOpacity>
 
       <FlatList
         data={result.photos} // result.photos yerine kullanıldı
@@ -120,5 +135,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: 'black',
     marginLeft: 5,
+  },
+  menuLink: {
+    fontSize: 18,
+    color: 'blue',
+    textDecorationLine: 'underline',
+    marginBottom: 10,
   },
 });

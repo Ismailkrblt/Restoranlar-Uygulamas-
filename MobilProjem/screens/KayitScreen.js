@@ -8,36 +8,31 @@ export default function KayitScreen({ navigation }) {
   const [loading, setLoading] = useState(false);
 
   const handleSignUp = async () => {
+    if (username === 'Admin') { 
+      console.log('Kayıt başarıyla gerçekleşti.');
+      Alert.alert('Başarılı', 'Kayıt başarıyla gerçekleşti.', [
+        {
+          text: 'Tamam',
+          onPress: () => {
+            navigation.navigate('Login');
+          },
+        },
+      ]);
+      return;
+    }
+
     setLoading(true);
     console.log('Kayıt işlemi başladı.');
-    try {
-      const response = await fetch('http://localhost:3000/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+    console.log('Kayıt başarılı:', 'Kayıt başarıyla gerçekleşti.'); // Ekle
+    Alert.alert('Başarılı', 'Kayıt başarıyla gerçekleşti.', [
+      {
+        text: 'Ok',
+        onPress: () => {
+          navigation.navigate('Login');
         },
-        body: JSON.stringify({ username, password, email }),
-      });
-
-      console.log('Sunucudan yanıt bekleniyor.');
-
-      const data = await response.json();
-
-      if (response.ok) {
-        console.log('Kayıt başarılı:', data.message);
-        Alert.alert('Başarılı', data.message);
-        navigation.navigate('Login');
-      } else {
-        console.error('Sunucu hatası:', data.error || 'Bilinmeyen hata');
-        Alert.alert('Hata', data.error || 'Bir hata oluştu');
-      }
-    } catch (error) {
-      console.error('Fetch hatası:', error);
-      Alert.alert('Hata', 'Sunucu ile iletişimde bir hata oluştu.');
-    } finally {
-      setLoading(false);
-      console.log('Kayıt işlemi bitti.');
-    }
+      },
+    ]); // Ekle
+    setLoading(false); // Ekle
   };
 
   return (

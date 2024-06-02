@@ -1,6 +1,5 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './screens/LoginScreen';
@@ -11,16 +10,29 @@ import KayitScreen from './screens/KayitScreen';
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+  const [username, setUsername] = useState('');
+
+  const updateUsername = (newUsername) => {
+    setUsername(newUsername);
+  };
+
   return (
     <NavigationContainer>
       <Stack.Navigator
         initialRouteName="Login"
         screenOptions={{
           headerTitle: 'NeYesek',
-          headerTitleStyle: { color: 'black', fontWeight: 'bold', justifyContent: 'center' },
+          headerRight: () => (
+            <View style={styles.headerRightContainer}>
+              <Text style={styles.headerRightText}>{username}</Text>
+            </View>
+          ),
+          headerTitleStyle: { color: 'black', fontWeight: 'bold', fontSize: 20 }, // Başlık için yazı tipi boyutu eklendi
         }}
       >
-        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Login">
+          {props => <LoginScreen {...props} updateUsername={updateUsername} />}
+        </Stack.Screen>
         <Stack.Screen name="Search" component={SearchScreen} />
         <Stack.Screen name="ResultsShow" component={ResultsShowScreen} />
         <Stack.Screen name="Kayit" component={KayitScreen} />
@@ -30,10 +42,12 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+  headerRightContainer: {
+    marginRight: 10,
+  },
+  headerRightText: {
+    color: 'black',
+    fontWeight: 'bold',
+    fontSize: 18, 
   },
 });
