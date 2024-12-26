@@ -27,7 +27,7 @@ export default function App() {
               <Text style={styles.headerRightText}>{username}</Text>
             </View>
           ),
-          headerTitleStyle: { color: 'black', fontWeight: 'bold', fontSize: 20 }, // Başlık için yazı tipi boyutu eklendi
+          headerTitleStyle: { color: 'black', fontWeight: 'bold', fontSize: 20 }, 
         }}
       >
         <Stack.Screen name="Login">
